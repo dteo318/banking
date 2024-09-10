@@ -13,6 +13,7 @@ import CustomFormInput from "./CustomFormInput";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
@@ -39,7 +40,20 @@ const AuthForm = ({ type }: { type: string }) => {
       // Sign up with AppWrite and create Plaid token
 
       if (type === "sign-up") {
-        const newUser = await signUp(data);
+        const userData = {
+          email: data.email,
+          password: data.password,
+          // Values will be populated and required if type === sign-up
+          firstName: data.firstName!,
+          lastName: data.lastName!,
+          address1: data.address1!,
+          city: data.city!,
+          state: data.state!,
+          zipCode: data.zipCode!,
+          dateOfBirth: data.dateOfBirth!,
+          ssn: data.ssn!,
+        };
+        const newUser = await signUp(userData);
         setUser(newUser);
       }
       if (type === "sign-in") {
@@ -86,7 +100,9 @@ const AuthForm = ({ type }: { type: string }) => {
       </header>
 
       {user ? (
-        <div className="flex flex-col gap-4">{/* Plaid link */}</div>
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant="primary" />
+        </div>
       ) : (
         <>
           <Form {...form}>
@@ -142,14 +158,14 @@ const AuthForm = ({ type }: { type: string }) => {
                       formControl={form.control}
                       name="dateOfBirth"
                       label="Date of Birth"
-                      placeholder="MM/DD/YYYY"
+                      placeholder="YYYY-MM-DD"
                     />
 
                     <CustomFormInput
                       formControl={form.control}
                       name="ssn"
                       label="SSN"
-                      placeholder="Enter your Social Security Number"
+                      placeholder="Enter your SSN"
                     />
                   </div>
                 </>
