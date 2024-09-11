@@ -152,8 +152,10 @@ export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
   let hasMore = true;
-  let transactions: any = [];
-
+  let transactions: Omit<
+    Transaction,
+    "$id" | "$createdAt" | "channel" | "senderBankId" | "receiverBankId"
+  >[] = [];
   try {
     // Iterate through each page of new transaction updates for item
     while (hasMore) {
@@ -173,7 +175,7 @@ export const getTransactions = async ({
         pending: transaction.pending,
         category: transaction.category ? transaction.category[0] : "",
         date: transaction.date,
-        image: transaction.logo_url,
+        image: transaction.logo_url || "",
       }));
 
       hasMore = data.has_more;
