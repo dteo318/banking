@@ -79,11 +79,11 @@ const TransactionsTable = ({ transactions }: TransactionTableProps) => {
               <TableCell className="pl-2 pr-10 min-w-32">
                 {formatDateTime(new Date(transaction.date)).dateTime}
               </TableCell>
-              <TableCell className="pl-2 pr-10 capitalize min-w-24">
-                {transaction.paymentChannel}
-              </TableCell>
               <TableCell className="pl-2 pr-10 max-md:hidden">
                 <CategoryBadge category={transaction.category} />
+              </TableCell>
+              <TableCell className="pl-2 pr-10 capitalize min-w-24 max-md:hidden">
+                {transaction.paymentChannel}
               </TableCell>
             </TableRow>
           );
